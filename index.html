@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD Negeri Kertasari - Ceria, Kreatif, dan Berprestasi</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- AOS (Animate On Scroll) Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fbbf24;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+        
+        /* Hero Slider */
+        .slide {
+            display: none;
+        }
+        .slide.active {
+            display: block;
+        }
+
+        /* Flip Card Effect */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        
+        /* Masonry Gallery */
+        .masonry {
+            columns: 4;
+            column-gap: 1rem;
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+            .masonry {
+                columns: 2;
+            }
+        }
+        @media (max-width: 480px) {
+            .masonry {
+                columns: 1;
+            }
+        }
+
+        /* Progress Bar Animation */
+        .progress-bar {
+            width: 0%;
+            transition: width 2s ease-in-out;
+        }
+        .progress-bar.animate {
+            width: var(--progress);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            cursor: pointer;
+        }
+        .lightbox.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        /* Back to Top Button */
+        #backToTop {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: #10b981;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #backToTop:hover {
+            background-color: #059669;
+            transform: scale(1.1);
+        }
+
+        /* Active Nav Link */
+        .nav-link.active {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-yellow-50 via-green-50 to-blue-50">
+
+    <!-- Navbar -->
+    <header class="bg-white/90 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 p-2 rounded-full mr-3">
+                        <i class="fas fa-school text-white text-2xl"></i>
+                    </div>
+                    <a href="#" class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">SD Negeri Kertasari</a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="#beranda" class="nav-link text-gray-700 hover:text-yellow-500 transition font-semibold">Beranda</a>
+                    <a href="#tentang" class="nav-link text-gray-700 hover:text-yellow-500 transition font-semibold">Tentang</a>
+                    <a href="#akademik" class="nav-link text-gray-700 hover:text-yellow-500 transition font-semibold">Akademik</a>
+                    <a href="#galeri" class="nav-link text-gray-700 hover:text-yellow-500 transition font-semibold">Galeri</a>
+                    <a href="#kontak" class="nav-link text-gray-700 hover:text-yellow-500 transition font-semibold">Kontak</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-gray-700 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#beranda" class="block py-2 text-gray-700 hover:text-yellow-500 transition font-semibold">Beranda</a>
+                <a href="#tentang" class="block py-2 text-gray-700 hover:text-yellow-500 transition font-semibold">Tentang</a>
+                <a href="#akademik" class="block py-2 text-gray-700 hover:text-yellow-500 transition font-semibold">Akademik</a>
+                <a href="#galeri" class="block py-2 text-gray-700 hover:text-yellow-500 transition font-semibold">Galeri</a>
+                <a href="#kontak" class="block py-2 text-gray-700 hover:text-yellow-500 transition font-semibold">Kontak</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-16">
+        <!-- Hero Section with Slider -->
+        <section id="beranda" class="relative h-screen flex items-center justify-center overflow-hidden">
+            <div class="slide active absolute inset-0 z-0" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/seed/slide1/1920/1080.jpg'); background-size: cover; background-position: center;"></div>
+            <div class="slide absolute inset-0 z-0" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/seed/slide2/1920/1080.jpg'); background-size: cover; background-position: center;"></div>
+            <div class="slide absolute inset-0 z-0" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://picsum.photos/seed/slide3/1920/1080.jpg'); background-size: cover; background-position: center;"></div>
+            
+            <div class="relative z-10 text-center text-white px-6" data-aos="fade-up" data-aos-duration="1000">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 drop-shadow-lg">SD Negeri Kertasari</h1>
+                <p class="text-xl md:text-3xl mb-8 drop-shadow-md">Tempat Belajar Asyik, Penuh Warna dan Prestasi!</p>
+                <div class="space-x-4">
+                    <a href="#tentang" class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105 shadow-lg">Yuk, Kenalan!</a>
+                    <a href="#kontak" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105 shadow-lg">Hubungi Kami</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Features -->
+        <section class="py-16 container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fas fa-user-graduate text-5xl text-yellow-500 mb-4"></i>
+                    <h3 class="font-bold text-gray-800">Siswa Berkarakter</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-chalkboard-teacher text-5xl text-green-500 mb-4"></i>
+                    <h3 class="font-bold text-gray-800">Guru Profesional</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fas fa-laptop-code text-5xl text-blue-500 mb-4"></i>
+                    <h3 class="font-bold text-gray-800">Pembelajaran Digital</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow" data-aos="zoom-in" data-aos-delay="400">
+                    <i class="fas fa-palette text-5xl text-purple-500 mb-4"></i>
+                    <h3 class="font-bold text-gray-800">Ekstrakurikuler Beragam</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section with Progress Bars -->
+        <section id="tentang" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold text-gray-800">Tentang Kami</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div data-aos="fade-right">
+                        <img src="https://picsum.photos/seed/schoolbuilding/600/400.jpg" alt="Gedung Sekolah" class="rounded-2xl shadow-2xl">
+                    </div>
+                    <div data-aos="fade-left">
+                        <h3 class="text-3xl font-bold mb-4 text-gray-800">Mewujudkan Pendidikan yang Berkualitas dan Menyenangkan</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            Kami percaya bahwa setiap anak adalah unik. Di SD Negeri Kertasari, kami berkomitmen untuk menciptakan lingkungan belajar yang aman, menyenangkan, dan stimulatif agar setiap siswa dapat mengembangkan potensi terbaiknya, baik secara akademis maupun non-akademis.
+                        </p>
+                        
+                        <!-- Animated Progress Bars -->
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700 font-semibold">Tingkat Kepuasan Orang Tua</span>
+                                    <span class="text-gray-700 font-semibold">98%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="progress-bar bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full" style="--progress: 98%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700 font-semibold">Kelulusan 100%</span>
+                                    <span class="text-gray-700 font-semibold">100%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="progress-bar bg-gradient-to-r from-yellow-400 to-orange-500 h-3 rounded-full" style="--progress: 100%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-700 font-semibold">Siswa yang Berprestasi</span>
+                                    <span class="text-gray-700 font-semibold">85%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="progress-bar bg-gradient-to-r from-purple-400 to-pink-500 h-3 rounded-full" style="--progress: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Academic Section with Flip Cards -->
+        <section id="akademik" class="py-20 container mx-auto px-6">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-4xl font-bold text-gray-800">Program Unggulan Kami</h2>
+                <div class="w-32 h-1 bg-gradient-to-r from-green-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Flip Card 1 -->
+                <div class="flip-card h-80" data-aos="flip-left">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-br from-yellow-400 to-orange-500 shadow-xl flex flex-col justify-center items-center text-white p-6">
+                            <i class="fas fa-book-reader text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold">Kurikulum Merdeka</h3>
+                        </div>
+                        <div class="flip-card-back bg-white shadow-xl flex flex-col justify-center p-6 text-gray-700">
+                            <h3 class="text-2xl font-bold mb-4">Belajar Sesuai Minat</h3>
+                            <p>Pembelajaran yang fleksibel dan berpusat pada siswa, mengembangkan profil Pelajar Pancasila yang beriman, bermoral, mandiri, dan gotong royong.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Flip Card 2 -->
+                <div class="flip-card h-80" data-aos="flip-left" data-aos-delay="100">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-br from-green-400 to-cyan-500 shadow-xl flex flex-col justify-center items-center text-white p-6">
+                            <i class="fas fa-robot text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold">Kelas Digital</h3>
+                        </div>
+                        <div class="flip-card-back bg-white shadow-xl flex flex-col justify-center p-6 text-gray-700">
+                            <h3 class="text-2xl font-bold mb-4">Membentuk Generasi Digital</h3>
+                            <p>Integrasi teknologi dalam pembelajaran untuk mempersiapkan siswa menghadapi era digital dengan fasilitas lab komputer dan pembelajaran berbasis TIK.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Flip Card 3 -->
+                <div class="flip-card h-80" data-aos="flip-left" data-aos-delay="200">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-gradient-to-br from-purple-400 to-pink-500 shadow-xl flex flex-col justify-center items-center text-white p-6">
+                            <i class="fas fa-theater-masks text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold">Pengembangan Diri</h3>
+                        </div>
+                        <div class="flip-card-back bg-white shadow-xl flex flex-col justify-center p-6 text-gray-700">
+                            <h3 class="text-2xl font-bold mb-4">Asah Bakat, Kembangkan Karakter</h3>
+                            <p>Beragam kegiatan ekstrakurikuler seperti Pramuka, Seni Tari, Musik, Olahraga, dan Pencak Silat untuk menunjang bakat dan minat siswa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold text-gray-800">Apa Kata Mereka?</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-purple-400 to-pink-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-8 rounded-2xl shadow-lg" data-aos="fade-up-right">
+                        <i class="fas fa-quote-left text-4xl text-yellow-500 mb-4"></i>
+                        <p class="text-gray-600 mb-4 italic">"Anak saya menjadi lebih percaya diri dan aktif sejak bersekolah di sini. Para guru sangat perhatian dan komunikatif dengan orang tua."</p>
+                        <p class="font-bold text-gray-800">- Budi Santoso, Orang Tua Siswa</p>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-2xl shadow-lg" data-aos="fade-up-left">
+                        <i class="fas fa-quote-left text-4xl text-green-500 mb-4"></i>
+                        <p class="text-gray-600 mb-4 italic">"Saya senang sekolah di sini! Banyak teman, guru-gurunya asyik, dan banyak kegiatan menarik. Belajar jadi tidak membosankan!"</p>
+                        <p class="font-bold text-gray-800">- Siti Aminah, Siswa Kelas 5</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section with Masonry -->
+        <section id="galeri" class="py-20 container mx-auto px-6">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-4xl font-bold text-gray-800">Galeri Kegiatan</h2>
+                <div class="w-32 h-1 bg-gradient-to-r from-green-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+            <div class="masonry">
+                <div class="masonry-item" data-aos="fade-up"><img src="https://picsum.photos/seed/gal1/400/500.jpg" alt="Gallery 1" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+                <div class="masonry-item" data-aos="fade-up" data-aos-delay="50"><img src="https://picsum.photos/seed/gal2/400/300.jpg" alt="Gallery 2" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+                <div class="masonry-item" data-aos="fade-up" data-aos-delay="100"><img src="https://picsum.photos/seed/gal3/400/600.jpg" alt="Gallery 3" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+                <div class="masonry-item" data-aos="fade-up" data-aos-delay="150"><img src="https://picsum.photos/seed/gal4/400/400.jpg" alt="Gallery 4" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+                <div class="masonry-item" data-aos="fade-up" data-aos-delay="200"><img src="https://picsum.photos/seed/gal5/400/350.jpg" alt="Gallery 5" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+                <div class="masonry-item" data-aos="fade-up" data-aos-delay="250"><img src="https://picsum.photos/seed/gal6/400/450.jpg" alt="Gallery 6" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+                <div class="masonry-item" data-aos="fade-up" data-aos-delay="300"><img src="https://picsum.photos/seed/gal7/400/320.jpg" alt="Gallery 7" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+                <div class="masonry-item" data-aos="fade-up" data-aos-delay="350"><img src="https://picsum.photos/seed/gal8/400/550.jpg" alt="Gallery 8" class="w-full rounded-lg shadow-md cursor-pointer gallery-img"></div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="kontak" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold text-gray-800">Hubungi Kami</h2>
+                    <div class="w-32 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div data-aos="fade-right">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">Kirim Kami Pesan</h3>
+                        <form id="contactForm" class="space-y-4">
+                            <input type="text" placeholder="Nama Lengkap" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-yellow-400 transition" required>
+                            <input type="email" placeholder="Email" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-yellow-400 transition" required>
+                            <textarea placeholder="Pesan Anda" rows="5" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-yellow-400 transition" required></textarea>
+                            <button type="submit" class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-3 rounded-lg hover:shadow-lg transition transform hover:scale-105">Kirim Pesan</button>
+                        </form>
+                    </div>
+                    <div data-aos="fade-left">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">Temui Kami</h3>
+                        <div class="bg-gradient-to-br from-green-50 to-blue-50 p-6 rounded-2xl shadow-lg space-y-4">
+                            <p class="text-gray-700"><i class="fas fa-map-marker-alt mr-3 text-red-500"></i> Jl. Pendidikan No. 12, Kertasari, Kab. Bandung</p>
+                            <p class="text-gray-700"><i class="fas fa-phone-alt mr-3 text-green-500"></i> (022) 1234567</p>
+                            <p class="text-gray-700"><i class="fas fa-envelope mr-3 text-blue-500"></i> info@sdnkertasari.sch.id</p>
+                            <div class="pt-4 flex space-x-4">
+                                <a href="#" class="text-2xl text-blue-600 hover:text-blue-800 transition"><i class="fab fa-facebook"></i></a>
+                                <a href="#" class="text-2xl text-pink-600 hover:text-pink-800 transition"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="text-2xl text-red-600 hover:text-red-800 transition"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                        <!-- Embedded Map -->
+                        <div class="rounded-lg overflow-hidden shadow-md h-64 mt-6">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.798315329494!2d107.62748691477087!3d-6.923566994994295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e7d4a8f5a6b1%3A0x1234567890abcdef!2sBandung%2C%20West%20Java%2C%20Indonesia!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 SD Negeri Kertasari. Dibuat dengan <i class="fas fa-heart text-red-500"></i> untuk kemajuan pendidikan.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <img src="" alt="Lightbox Image" class="lightbox-content">
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Kembali ke Atas"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Initialize AOS
+            AOS.init({
+                once: true // Animasi hanya terjadi sekali
+            });
+
+            // Hero Slider
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                slides[index].classList.add('active');
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            setInterval(nextSlide, 4000); // Ganti slide setiap 4 detik
+
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Smooth Scrolling for Nav Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+
+            // Active Nav Link on Scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 100)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').slice(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // Progress Bar Animation
+            const progressBars = document.querySelectorAll('.progress-bar');
+            const progressObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        progressObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            progressObservers = document.querySelectorAll('.progress-bar').forEach(bar => {
+                progressObserver.observe(bar);
+            });
+
+
+            // Lightbox
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = lightbox.querySelector('.lightbox-content');
+            const galleryImgs = document.querySelectorAll('.gallery-img');
+
+            galleryImgs.forEach(img => {
+                img.addEventListener('click', () => {
+                    lightbox.classList.add('active');
+                    lightboxImg.src = img.src;
+                });
+            });
+
+            lightbox.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+            });
+
+            // Contact Form
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Terima kasih! Pesan Anda telah terkirim. (Ini adalah demo)');
+                contactForm.reset();
+            });
+
+            // Back to Top Button
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.style.display = "block";
+                } else {
+                    backToTopBtn.style.display = "none";
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+        });
+    </script>
+</body>
+</html>
